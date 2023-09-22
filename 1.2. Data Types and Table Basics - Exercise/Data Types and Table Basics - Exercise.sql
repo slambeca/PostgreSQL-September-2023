@@ -1,9 +1,9 @@
-00. Create a Database
+-- 00. Create a Database
 
 CREATE DATABASE minions_db;
 
 
-01. Create a Table
+-- 01. Create a Table
 
 CREATE TABLE IF NOT EXISTS minions
 	(
@@ -12,30 +12,30 @@ CREATE TABLE IF NOT EXISTS minions
 		age INTEGER
 	);
 
-02. Rename the Table
+-- 02. Rename the Table
 
 ALTER TABLE minions
 RENAME TO minions_info;
 
-03. Alter the Table
+-- 03. Alter the Table
 
 ALTER TABLE minions_info
 ADD COLUMN code CHAR(4),
 ADD COLUMN task TEXT,
 ADD COLUMN salary DECIMAL(8, 3);
 
-04. Rename Column
+-- 04. Rename Column
 
 ALTER TABLE minions_info
 RENAME COLUMN salary TO banana;
 
-05. Add New Columns
+-- 05. Add New Columns
 
 ALTER TABLE minions_info
 ADD COLUMN email VARCHAR(20),
 ADD COLUMN equipped BOOLEAN NOT NULL;
 
-06. Create ENUM Type
+-- 06. Create ENUM Type
 
 CREATE TYPE type_mood AS ENUM 
 	(
@@ -48,14 +48,14 @@ CREATE TYPE type_mood AS ENUM
 ALTER TABLE minions_info
 ADD COLUMN mood type_mood;
 
-07. Set Default
+-- 07. Set Default
 
 ALTER TABLE minions_info
 ALTER COLUMN age SET DEFAULT 0,
 ALTER COLUMN "name" SET DEFAULT '',
 ALTER COLUMN code SET DEFAULT '';
 
-08. Add Constraints
+-- 08. Add Constraints
 
 -- ALTER TABLE minions_info
 -- ADD CONSTRAINT UQ_email_and_id UNIQUE (id, email),
@@ -65,22 +65,22 @@ ALTER TABLE minions_info
 ADD CONSTRAINT unique_containt UNIQUE (id, email),
 ADD CONSTRAINT banana_check CHECK(banana>0);
 
-09. Change Column’s Data Type
+-- 09. Change Column’s Data Type
 
 ALTER TABLE minions_info
 ALTER COLUMN task TYPE VARCHAR(150);
 
-10. Drop Constraint
+-- 10. Drop Constraint
 
 ALTER TABLE minions_info
 ALTER COLUMN equipped DROP NOT NULL;
 
-11. Remove Column
+-- 11. Remove Column
 
 ALTER TABLE minions_info
 DROP COLUMN age;
 
-12. Table Birthdays
+-- 12. Table Birthdays
 
 CREATE TABLE minions_birthdays (
 	id INTEGER UNIQUE NOT NULL,
@@ -91,7 +91,7 @@ CREATE TABLE minions_birthdays (
 	party TIMESTAMPTZ
 );
 
-13. Insert Into
+-- 13. Insert Into
 
 INSERT INTO minions_info 
 	(name, code, task, banana, email, equipped, mood)
@@ -104,18 +104,18 @@ VALUES
 	('Norbert', 'FEWB', 'Testing', 3265.500, 'norbert@minion.com', true, 'sad'),
 	('Donny', 'L', 'Make a Map', 8.452, 'donny@minion.com', true, 'happy');
 
-14. Select
+-- 14. Select
 
 SELECT name, task, email, banana FROM minions_info;
 
-15. Truncate the Table
+-- 15. Truncate the Table
 
 TRUNCATE TABLE minions_info;
 
-16. Drop the Table
+-- 16. Drop the Table
 
 DROP TABLE minions_birthdays;
 
-17. Drop the Database
+-- 17. Drop the Database
 
 DROP DATABASE minions_db WITH (FORCE);
