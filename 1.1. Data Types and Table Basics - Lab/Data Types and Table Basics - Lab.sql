@@ -1,8 +1,8 @@
-00. Create Database
+-- 00. Create Database
 
 CREATE DATABASE gamebar;
 
-01. Create Tables
+-- 01. Create Tables
 
 CREATE TABLE
 	employees(
@@ -30,28 +30,28 @@ CREATE TABLE
 		start TIMESTAMP
 	);
 
-03. Alter Tables
+-- 03. Alter Tables
 
 ALTER TABLE employees
 
 ADD COLUMN middle_name VARCHAR(50);
 
-04. Add Constraints
+-- 04. Add Constraints
 
 ALTER TABLE employees
 ALTER COLUMN salary SET NOT NULL,
 ALTER COLUMN salary SET DEFAULT 0,
 ALTER COLUMN hiring_date SET NOT NULL;
 
-05. Modify Columns
+-- 05. Modify Columns
 
 ALTER TABLE employees
 ALTER COLUMN middle_name TYPE VARCHAR(100);
 
-06. Truncate Tables
+-- 06. Truncate Tables
 
 TRUNCATE TABLE issues;
 
-07. Drop Tables
+-- 07. Drop Tables
 
 DROP TABLE departments;
