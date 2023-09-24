@@ -164,3 +164,111 @@ VALUES
 	('Executive', 109);
 
 -- 15. New Table
+
+CREATE TABLE IF NOT EXISTS
+	company_chart
+AS SELECT
+	CONCAT_WS(' ', first_name, last_name) AS "Full Name",
+	job_title AS "Job Title",
+	department_id AS "Department ID",
+	manager_id AS "Manager ID"
+FROM
+	employees;
+
+-- 16. Update the Project End Date
+
+UPDATE 
+	projects
+SET 
+	end_date = start_date + INTERVAL '5 months'
+WHERE 
+	end_date IS NULL;
+
+-- 17. Award Employees with Experience
+
+UPDATE
+	employees
+SET
+	salary = salary + 1500,
+	job_title = 'Senior' || ' ' || job_title
+WHERE 
+	hire_date BETWEEN '1998-01-01' AND '2000-01-05';
+
+-- 18. Delete Addresses
+
+DELETE FROM
+	addresses
+WHERE
+	city_id IN (5, 17, 20, 30);
+
+-- 19. Create a View
+
+CREATE VIEW 
+	view_company_chart 
+AS
+SELECT 
+	"Full Name",
+	"Job Title"
+FROM
+	company_chart
+WHERE
+	"Manager ID" = 184;
+
+-- 20. Create a View with Multiple Tables
+
+CREATE VIEW view_addresses
+AS
+SELECT
+	e.first_name || ' ' || e.last_name AS "Full Name",
+	e.department_id,
+	a.number || ' ' || a.street AS "Address"
+FROM
+	employees AS e
+JOIN 
+	addresses AS a
+		ON 
+	e.address_id = a.id
+ORDER BY
+	"Address" ASC;
+
+-- 21. Alter View
+
+ALTER VIEW
+	view_addresses
+RENAME TO
+	view_employee_addresses_info;
+
+-- 22. Drop View
+
+DROP VIEW view_company_chart;
+
+-- 23. Upper
+
+UPDATE
+	projects
+SET
+	name = UPPER(name);
+
+-- 24. Substring
+
+CREATE VIEW 
+	view_initials
+AS
+SELECT
+	SUBSTRING(first_name, 1, 2) AS initial, last_name
+FROM 
+	employees
+ORDER BY
+	last_name;
+
+-- 25. Like
+
+SELECT
+	name,
+	start_date
+FROM
+	projects
+WHERE name LIKE 
+	'MOUNT%'
+ORDER BY
+	id;
