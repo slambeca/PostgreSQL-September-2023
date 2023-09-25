@@ -37,3 +37,39 @@ FROM
 	triangles
 ORDER BY 
 	id ASC;
+
+-- 04. Format Costs
+
+SELECT
+	title,
+	ROUND(cost, 3)
+FROM
+	books
+ORDER BY
+	id ASC;
+
+-- 05. Year of Birth
+
+SELECT 
+	first_name,
+	last_name,
+	EXTRACT('year' FROM born)
+FROM 
+	authors;
+
+-- 06. Format Date of Birth
+
+SELECT
+	last_name as "Last Name",
+	TO_CHAR(born, 'DD (Dy) Mon YYYY') AS "Date of Birth"
+FROM
+	authors;
+
+-- 07. Harry Potter Books
+
+SELECT
+	title
+FROM
+	books
+WHERE
+	title LIKE 'Harry Potter%';
