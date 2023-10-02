@@ -106,3 +106,85 @@ HAVING
 	deposit_expiration_date <= '1983-08-17'
 ORDER BY
 	deposit_expiration_date ASC;
+
+-- 11. Filter Max Deposit
+
+SELECT
+	magic_wand_creator,
+	MAX(deposit_amount) AS "Max Deposit Amount"
+FROM
+	wizard_deposits
+GROUP BY 
+	magic_wand_creator
+HAVING
+	MAX(deposit_amount) NOT BETWEEN 20000 and 40000
+ORDER BY
+	"Max Deposit Amount" DESC
+LIMIT 3;
+
+-- Variant 2
+
+SELECT
+	magic_wand_creator,
+	MAX(deposit_amount) AS "Max Deposit Amount"
+FROM
+	wizard_deposits
+GROUP BY 
+	magic_wand_creator
+HAVING
+	MAX(deposit_amount) < 20000
+		AND
+	MAX(deposit_amount) > 40000
+ORDER BY
+	"Max Deposit Amount" DESC
+LIMIT 3;
+
+-- 12. Age Group
+
+SELECT
+	CASE
+		WHEN age BETWEEN 11 AND 20 THEN '[11-20]'
+		WHEN age BETWEEN 21 AND 30 THEN '[21-30]'
+		WHEN age BETWEEN 31 AND 40 THEN '[31-40]'
+		WHEN age BETWEEN 41 AND 50 THEN '[41-50]'
+		WHEN age BETWEEN 51 AND 60 THEN '[51-60]'
+		ELSE '[61+]'
+	END AS "Age Group",
+	COUNT(*)
+FROM
+	wizard_deposits
+GROUP BY 
+	"Age Group"
+ORDER BY 
+	"Age Group" ASC;
+
+-- 13. SUM the Employees
+
+SELECT
+	COUNT(CASE WHEN department_id = 1 THEN 1 END) AS "Engineering",
+	COUNT(CASE WHEN department_id = 2 THEN 1 END) AS "Tool Design",
+	COUNT(CASE WHEN department_id = 3 THEN 1 END) AS "Sales",
+	COUNT(CASE WHEN department_id = 4 THEN 1 END) AS "Marketing",
+	COUNT(CASE WHEN department_id = 5 THEN 1 END) AS "Purchasing",
+	COUNT(CASE WHEN department_id = 6 THEN 1 END) AS "Research and Development",
+	COUNT(CASE WHEN department_id = 7 THEN 1 END) AS "Production"
+FROM
+	employees;
+
+-- 14. Update Employees’ Data
+
+UPDATE
+	employees
+SET
+	salary = CASE
+		WHEN hire_date < '2015-01-16' THEN salary + 2500
+		WHEN hire_date < '2020-03-04' THEN salary + 1500
+		ELSE salary
+	END,
+	job_title = CASE
+		WHEN hire_date < '2015-01-16' THEN 'Senior ' || job_title
+		WHEN hire_date < '2020-03-04' THEN 'Mid-' || job_title
+		ELSE job_title
+	END;
+
+-- 15. Categorizes Salary
