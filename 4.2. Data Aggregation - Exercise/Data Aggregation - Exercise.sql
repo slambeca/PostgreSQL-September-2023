@@ -188,3 +188,50 @@ SET
 	END;
 
 -- 15. Categorizes Salary
+
+SELECT
+	job_title,
+	CASE
+		WHEN AVG(salary) > 45800 THEN 'Good'
+		WHEN AVG(salary) BETWEEN 27500 AND 45800 THEN 'Medium'
+		WHEN AVG(salary) < 27500 THEN 'Need Improvement'
+	END AS "Category"
+FROM
+	employees
+GROUP BY
+	job_title
+ORDER BY
+	"Category" ASC,
+	job_title ASC;
+
+-- 16. WHERE Project Status
+
+SELECT
+	project_name,
+	CASE
+		WHEN start_date IS NULL AND end_date IS NULL THEN 'Ready for development'
+		WHEN start_date IS NOT NULL AND end_date IS NULL THEN 'In Progress'
+		ELSE 'Done'
+	END AS project_status
+FROM
+	projects
+WHERE
+	project_name LIKE '%Mountain%';
+
+-- 17. HAVING Salary Level
+
+SELECT
+	department_id,
+	COUNT(*) AS num_employees,
+	CASE
+		WHEN AVG(salary) > 50000 THEN 'Above average'
+		ELSE 'Below average'
+	END AS salary_level
+FROM
+	employees
+GROUP BY
+	department_id
+HAVING
+	AVG(salary) > 30000
+ORDER BY
+	department_id ASC;
