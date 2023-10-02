@@ -1,5 +1,6 @@
-# PostgreSQL-September-2023
-Resolved exercsises from the SoftUni PostgreSQL course, which is the first part of the Python DB course
+![244389413-f804fd37-d796-41a8-bee1-dbfe53cbca83](https://github.com/slambeca/SoftUni-PostgreSQL-September-2023/assets/95913250/707f799b-10e0-42bb-9a83-61ec3c137a23)
+
+# SoftUni-PostgreSQL-September-2023
 
 # Course details
 
@@ -13,3 +14,5 @@ Databases are the standard way of using dynamic information in modern technology
 * Working with relationships between tables
 * Using procedures and functions
 * Transaction Management
+
+# Certificate and Course Cirriculum
