@@ -13,3 +13,32 @@ CREATE TABLE peaks (
 		FOREIGN KEY (mountain_id)
 			REFERENCES mountains(id)
 );
+
+-- 2. Trip Organization
+
+SELECT
+	v.driver_id,
+	v.vehicle_type,
+	CONCAT_WS(' ', c.first_name, c.last_name) AS driver_name
+FROM
+	vehicles AS v
+JOIN 
+	campers AS c
+ON
+	v.driver_id = c.id;
+
+-- 3. SoftUni Hiking
+
+SELECT
+	r.start_point,
+	r.end_point,
+	r.leader_id,
+	CONCAT_WS(' ', c.first_name, c.last_name) AS leader_name
+FROM
+	routes AS r
+JOIN
+	campers AS c
+ON
+	c.id = r.leader_id;
+
+-- 4. Delete Mountains
