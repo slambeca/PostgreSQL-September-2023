@@ -281,3 +281,104 @@ CREATE TABLE IF NOT EXISTS
 			FOREIGN KEY (item_id)
 				REFERENCES items(id)
 );
+
+-- 11. Delete Cascade
+
+ALTER TABLE IF EXISTS
+	countries
+ADD CONSTRAINT 
+	fk_countries_continents
+FOREIGN KEY
+	(continent_code)
+REFERENCES
+	continents(continent_code)
+ON DELETE CASCADE;
+
+ALTER TABLE IF EXISTS
+	countries
+ADD CONSTRAINT
+	fk_countries_currencies
+FOREIGN KEY
+	(currency_code)
+REFERENCES
+	currencies(currency_code)
+ON DELETE CASCADE;
+
+-- 12. Update Cascade
+
+ALTER TABLE IF EXISTS
+	countries_rivers
+ADD CONSTRAINT 
+	fk_countries_rivers_rivers
+FOREIGN KEY
+	(river_id)
+REFERENCES
+	rivers(id)
+ON UPDATE CASCADE;
+
+ALTER TABLE IF EXISTS
+	countries_rivers
+ADD CONSTRAINT
+	fk_countries_rivers_countries
+FOREIGN KEY
+	(country_code)
+REFERENCES
+	countries(country_code)
+ON UPDATE CASCADE;
+
+-- 13. SET NULL
+
+CREATE TABLE IF NOT EXISTS
+	customers (
+		id SERIAL PRIMARY KEY,
+		customer_name VARCHAR(50)
+);
+
+CREATE TABLE IF NOT EXISTS
+	contacts (
+		id SERIAL PRIMARY KEY,
+		contact_name VARCHAR(50),
+		phone VARCHAR(50),
+		email VARCHAR(50),
+		customer_id INT,
+		CONSTRAINT fk_contacts_customers
+			FOREIGN KEY (customer_id)
+				REFERENCES customers(id)
+					ON DELETE SET NULL
+					ON UPDATE CASCADE
+);
+
+INSERT INTO
+	customers(customer_name)
+VALUES
+	('BlueBird Inc'),
+	('Dolphin LLC');
+	
+INSERT INTO
+	contacts(contact_name, phone, email, customer_id)
+VALUES
+	('John Doe', '(408)-111-1234', 'john.doe@bluebird.dev',	1),
+	('Jane Doe', '(408)-111-1235', 'jane.doe@bluebird.dev',	1),
+	('David Wright', '(408)-222-1234', 'david.wright@dolphin.dev', 2);
+	
+DELETE FROM
+	customers
+WHERE
+	id = 1;
+
+-- 14. Peaks in Rila
+
+SELECT
+	m.mountain_range,
+	p.peak_name,
+	p.elevation
+FROM
+	mountains AS m
+JOIN
+	peaks AS p
+ON
+	m.id = p.mountain_id
+WHERE
+	mountain_range = 'Rila'
+ORDER BY
+	elevation DESC;
