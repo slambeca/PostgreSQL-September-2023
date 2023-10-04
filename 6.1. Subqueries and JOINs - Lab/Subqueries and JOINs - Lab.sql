@@ -56,3 +56,10 @@ WHERE
 	project_id = 1;
 
 -- 04. Higher Salary
+
+SELECT
+	COUNT(*)
+FROM
+	employees
+WHERE
+	salary > (SELECT AVG(salary) FROM employees);
