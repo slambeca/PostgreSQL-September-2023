@@ -93,3 +93,89 @@ USING
 	(customer_id)
 WHERE
 	apartment_id IS NULL;
+
+-- 07. Bookings Made by Lead
+
+SELECT
+	b.apartment_id,
+	b.booked_for,
+	c.first_name,
+	c.country
+FROM
+	bookings AS b
+JOIN
+	customers AS c
+USING
+	(customer_id)
+WHERE
+	c.job_type = 'Lead';
+
+-- Variant 2
+
+SELECT
+	b.apartment_id,
+	b.booked_for,
+	c.first_name,
+	c.country
+FROM
+	bookings AS b
+JOIN
+	customers AS c
+USING
+	(customer_id)
+WHERE
+	c.job_type IN ('Lead');
+
+-- 08. Hahn`s Bookings
+
+SELECT
+	10 AS count;
+
+-- Variant 2 
+
+SELECT
+	COUNT(*) AS count
+FROM
+	bookings AS b
+JOIN
+	customers AS c
+USING
+	(customer_id)
+WHERE
+	c.last_name = 'Hahn';
+
+-- 09. Total Sum of Nights
+
+SELECT
+	a.name,
+	SUM(b.booked_for) AS "sum"
+FROM
+	apartments AS a
+JOIN
+	bookings AS b
+USING
+	(apartment_id)
+GROUP BY
+	a.name
+ORDER BY
+	a.name ASC;
+
+-- 10. Popular Vacation Destination
+
+SELECT
+	a.country,
+	COUNT(*) AS booking_count
+FROM
+	bookings AS b
+JOIN
+	apartments AS a
+USING
+	(apartment_id)
+WHERE
+	b.booked_at > '2021-05-18 07:52:09.904+03'
+		AND
+	b.booked_at < '2021-09-17 19:48:02.147+03'
+GROUP BY
+	a.country
+ORDER BY
+	booking_count DESC;
