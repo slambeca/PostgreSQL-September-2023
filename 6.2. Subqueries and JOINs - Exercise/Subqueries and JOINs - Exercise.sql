@@ -179,3 +179,67 @@ GROUP BY
 	a.country
 ORDER BY
 	booking_count DESC;
+
+-- 11. Bulgaria's Peaks Higher than 2835 Meters
+
+SELECT
+	mc.country_code,
+	m.mountain_range,
+	p.peak_name,
+	p.elevation
+FROM
+	mountains AS m
+JOIN
+	peaks AS p
+ON
+	m.id = p.mountain_id
+JOIN
+	mountains_countries AS mc
+ON
+	m.id = mc.mountain_id
+WHERE
+	p.elevation > 2835 AND mc.country_code = 'BG'
+ORDER BY
+	p.elevation DESC;
+
+-- 12. Count Mountain Ranges
+
+SELECT
+	mc.country_code,
+	COUNT(m.mountain_range) AS mountain_range_count
+FROM
+	mountains_countries AS mc
+JOIN
+	mountains AS m
+ON
+	mc.mountain_id = m.id
+WHERE
+	mc.country_code IN ('BG', 'RU', 'US')
+GROUP BY
+	mc.country_code
+ORDER BY
+	mountain_range_count DESC;
+
+-- 13. Rivers in Africa
+
+SELECT
+	c.country_name,
+	r.river_name 
+FROM
+	countries AS c
+LEFT JOIN
+	countries_rivers AS cr
+USING
+	(country_code)
+LEFT JOIN
+	rivers AS r
+ON
+	r.id = cr.river_id
+WHERE
+	continent_code = 'AF'
+ORDER BY
+	c.country_name ASC
+LIMIT 
+	5;
+
+-- 14. Minimum Average Area Across Continents
