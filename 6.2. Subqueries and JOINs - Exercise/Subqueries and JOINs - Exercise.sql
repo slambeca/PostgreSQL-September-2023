@@ -44,3 +44,52 @@ ORDER BY
 	customer_name ASC
 LIMIT
 	10;
+
+-- 04. Booking Information
+
+SELECT
+	b.booking_id,
+	a.name AS apartment_owner,
+	a.apartment_id,
+	CONCAT_WS(' ', c.first_name, c.last_name) AS customer_name
+FROM
+	bookings AS b
+FULL JOIN
+	apartments AS a
+USING
+	(booking_id)
+FULL JOIN
+	customers AS c
+USING
+	(customer_id)
+ORDER BY
+	b.booking_id ASC,
+	apartment_owner ASC,
+	customer_name ASC;
+
+-- 5. Multiplication of Information (can not be tested in Judge)
+
+SELECT
+	b.booking_id,
+	c.first_name AS customer_name
+FROM
+	bookings AS b
+CROSS JOIN
+	customers AS c
+ORDER BY
+	customer_name ASC;
+
+-- 06. Unassigned Apartments
+
+SELECT
+	b.booking_id,
+	apartment_id,
+	companion_full_name
+FROM
+	bookings AS b
+JOIN
+	customers AS c
+USING
+	(customer_id)
+WHERE
+	apartment_id IS NULL;
