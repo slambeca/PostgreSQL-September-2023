@@ -1,5 +1,4 @@
 -- 01. Booked for Nights
-
 SELECT
 	CONCAT_WS(' ', a.address, a.address_2) AS apartment_address,
 	b.booked_for AS nights
@@ -392,3 +391,48 @@ ORDER BY
 	tablename ASC,
 	indexname ASC;
 
+-- 19. Continents and Currencies
+
+CREATE VIEW 
+	continent_currency_usage 
+AS
+SELECT 
+	continent_code, 
+	currency_code, 
+	currency_usage
+FROM (
+    SELECT
+        continent_code,
+        currency_code,
+        DENSE_RANK() OVER (
+            PARTITION BY 
+				"continent_code"
+            ORDER BY 
+				currency_usage DESC
+            ) AS 
+				currency_rank,
+        		currency_usage
+    FROM (
+        SELECT
+            con.continent_code,
+            coun.currency_code,
+            COUNT(*) AS currency_usage
+        FROM 
+			countries AS coun
+        JOIN 
+			continents AS con
+		USING 
+			(continent_code)
+        GROUP BY 
+			con.continent_code, coun.currency_code
+        HAVING COUNT(*) > 1
+    ) AS 
+			grouped_currencies
+) AS 
+	currencies_ranked
+WHERE 
+	currency_rank = 1
+ORDER BY 
+	currency_usage DESC;
+
+-- 20. The Highest Peak in Each Country #TODO
