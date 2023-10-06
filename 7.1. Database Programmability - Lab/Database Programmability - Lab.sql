@@ -5,8 +5,7 @@ RETURNS INT AS
 
 $$
 	BEGIN
-	RETURN 
-	(SELECT
+	RETURN (SELECT
 	COUNT(*) AS count
 FROM
 	employees AS e
@@ -25,4 +24,24 @@ $$
 
 LANGUAGE plpgsql;
 
-SELECT fn_count_employees_by_town('Varna') AS count
+-- 02. Employees Promotion
+
+CREATE OR REPLACE PROCEDURE sp_increase_salaries(department_name VARCHAR)
+LANGUAGE plpgsql
+AS 
+$$
+BEGIN
+    UPDATE 
+		employees AS e
+    SET 
+		salary = salary * 1.05
+    FROM 
+		departments AS d
+    WHERE 
+			e.department_id = d.department_id
+        AND 
+			d.name = department_name;
+END;
+$$;
+
+CALL sp_increase_salaries('Finance')
