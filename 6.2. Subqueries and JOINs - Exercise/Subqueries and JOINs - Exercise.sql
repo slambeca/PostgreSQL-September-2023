@@ -1,4 +1,5 @@
 -- 01. Booked for Nights
+
 SELECT
 	CONCAT_WS(' ', a.address, a.address_2) AS apartment_address,
 	b.booked_for AS nights
