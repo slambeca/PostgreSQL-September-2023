@@ -342,6 +342,42 @@ ORDER BY
 
 -- 17. Monasteries by Continents and Countries
 
+UPDATE
+	countries
+SET
+	country_name = 'Burma'
+WHERE
+	country_name = 'Myanmar';
+	
+INSERT INTO
+	monasteries(monastery_name, country_code)
+VALUES 
+	('Hanga Abbey', (SELECT country_code FROM countries WHERE country_name ='Tanzania')),
+	('Myin-Tin-Daik', (SELECT country_code FROM countries WHERE country_name = 'Myanmar'));
+	
+SELECT
+	con.continent_name,
+	coun.country_name,
+	COUNT(mon.id) AS monasteries_count
+FROM
+	monasteries AS mon
+RIGHT JOIN
+	countries AS coun
+USING
+	(country_code)
+JOIN
+	continents AS con
+USING
+	(continent_code)
+WHERE
+	three_rivers = FALSE
+GROUP BY
+	continent_name,
+	country_name
+ORDER BY
+	monasteries_count DESC,
+	country_name ASC;
+
 -- 18. Retrieving Information about Indexes
 
 SELECT 
@@ -355,3 +391,4 @@ WHERE
 ORDER BY
 	tablename ASC,
 	indexname ASC;
+
