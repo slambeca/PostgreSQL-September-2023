@@ -1,6 +1,6 @@
 -- 1.1. Database Design
 
-DROP TABLE IF EXISTS owners;
+DROP TABLE IF EXISTS owners CASCADE;
 
 CREATE TABLE
 	owners (
@@ -10,7 +10,7 @@ CREATE TABLE
 		address VARCHAR(50)
 );
 
-DROP TABLE IF EXISTS animal_types;
+DROP TABLE IF EXISTS animal_types CASCADE;
 
 CREATE TABLE
 	animal_types (
@@ -18,7 +18,7 @@ CREATE TABLE
 		animal_type VARCHAR(30) NOT NULL
 );
 
-DROP TABLE IF EXISTS cages;
+DROP TABLE IF EXISTS cages CASCADE;
 
 CREATE TABLE cages(
 	id SERIAL PRIMARY KEY,
@@ -32,9 +32,11 @@ ADD CONSTRAINT
 FOREIGN KEY 
 	(animal_type_id)
 REFERENCES 
-	animal_types(id);
+	animal_types(id)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE;
 
-DROP TABLE IF EXISTS animals;
+DROP TABLE IF EXISTS animals CASCADE;
 
 CREATE TABLE animals (
 	id SERIAL PRIMARY KEY,
@@ -51,22 +53,26 @@ ADD CONSTRAINT
 FOREIGN KEY
 	(owner_id)
 REFERENCES
-	owners(id),
+	owners(id)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE,
 ADD CONSTRAINT
 	fk_animals_animal_types
 FOREIGN KEY
 	(animal_type_id)
 REFERENCES
-	animal_types(id);
+	animal_types(id)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE;
 
-DROP TABLE IF EXISTS volunteers_departments;
+DROP TABLE IF EXISTS volunteers_departments CASCADE;
 
 CREATE TABLE volunteers_departments (
 	id SERIAL PRIMARY KEY,
 	department_name VARCHAR(30) NOT NULL
 );
 
-DROP TABLE IF EXISTS volunteers;
+DROP TABLE IF EXISTS volunteers CASCADE;
 
 CREATE TABLE volunteers (
 	id SERIAL PRIMARY KEY,
@@ -84,15 +90,19 @@ ADD CONSTRAINT
 FOREIGN KEY
 	(animal_id)
 REFERENCES
-	animals(id),
+	animals(id)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE,
 ADD CONSTRAINT
 	fk_volunteers_volunteers_departments
 FOREIGN KEY
 	(department_id)
 REFERENCES
-	volunteers_departments(id);
+	volunteers_departments(id)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE;
 
-DROP TABLE IF EXISTS animals_cages;
+DROP TABLE IF EXISTS animals_cages CASCADE;
 
 CREATE TABLE animals_cages (
 	cage_id INT NOT NULL,
@@ -106,10 +116,50 @@ ADD CONSTRAINT
 FOREIGN KEY
 	(cage_id)
 REFERENCES
-	cages(id),
+	cages(id)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE,
 ADD CONSTRAINT
 	fk_animals_cages_animals
 FOREIGN KEY
 	(animal_id)
 REFERENCES
-	animals(id);
+	animals(id)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE;
+
+-- 2.2 Insert
+
+INSERT INTO
+	volunteers(name, phone_number, address, animal_id, department_id)
+VALUES
+	('Anita Kostova', '0896365412',	'Sofia, 5 Rosa str.', 15, 1),
+	('Dimitur Stoev', '0877564223',	NULL, 42, 4),
+	('Kalina Evtimova', '0896321112', 'Silistra, 21 Breza str.', 9,	7),
+	('Stoyan Tomov', '0898564100', 'Montana, 1 Bor str.', 18, 8),
+	('Boryana Mileva', '0888112233', NULL, 31, 5);
+	
+INSERT INTO
+	animals(name, birthdate, owner_id, animal_type_id)
+VALUES
+	('Giraffe',	'2018-09-21', 21,	1),
+	('Harpy Eagle',	'2015-04-17', 15, 3),
+	('Hamadryas Baboon', '2017-11-02', NULL, 1),
+	('Tuatara',	'2021-06-30', 2, 4);
+
+-- 2.3. Update
+
+UPDATE
+	animals
+SET
+	owner_id = (SELECT id FROM owners WHERE name = 'Kaloqn Stoqnov')
+WHERE
+	owner_id IS NULL;
+
+-- 2.4. Delete
+
+DELETE
+FROM
+	volunteers_departments
+WHERE
+	department_name = 'Education program assistant';
