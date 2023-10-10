@@ -214,3 +214,43 @@ LIMIT
 	5;
 
 -- 3.8. Owners, Animals and Cages
+
+SELECT
+	CONCAT_WS(' - ', o.name, a.name) AS "Owners - Animals",
+	o.phone_number AS "Phone Number",
+	ac.cage_id AS "Cage ID"
+FROM
+	animals AS a
+JOIN
+	owners AS o
+ON 
+	a.owner_id = o.id
+JOIN
+	animals_cages AS ac
+ON
+	a.id = ac.animal_id
+WHERE 
+-- 	a.animal_type_id = 1
+	a.animal_type_id = (SELECT id FROM animal_types WHERE animal_type = 'Mammals')
+ORDER BY
+	o.name ASC,
+	a.name DESC;
+
+-- 3.9. Volunteers in Sofia
+
+SELECT
+	name AS volunteers,
+	phone_number,
+	REGEXP_REPLACE(address, '.*?(\d+)', '\1') AS address
+FROM
+	volunteers
+WHERE
+	department_id = (SELECT id FROM volunteers_departments WHERE department_name = 'Education program 
+
+assistant')
+AND
+	address LIKE '%Sofia%'
+ORDER BY
+	name ASC;
+
+-- 3.10. Animals for Adoption
