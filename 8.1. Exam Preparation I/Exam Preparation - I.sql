@@ -178,3 +178,39 @@ ORDER BY
 	name ASC,
 	animal_id ASC,
 	department_id ASC;
+
+-- 3.6 Animals Data
+
+SELECT
+	a.name,
+	at.animal_type,
+	TO_CHAR(a.birthdate, 'DD.MM.YYYY') AS birthdate
+FROM
+	animals AS a
+JOIN
+	animal_types AS at
+ON
+	a.animal_type_id = at.id
+ORDER BY
+	a.name;
+
+-- 3.7. Owners and Their Animals
+
+SELECT
+	o.name AS owner,
+	COUNT(a.id) AS count_of_animals
+FROM
+	animals AS a
+JOIN
+	owners AS o
+ON
+	a.owner_id = o.id
+GROUP BY
+	o.name
+ORDER BY
+	count_of_animals DESC,
+	o.name ASC
+LIMIT 
+	5;
+
+-- 3.8. Owners, Animals and Cages
