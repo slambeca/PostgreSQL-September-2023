@@ -253,4 +253,42 @@ AND
 ORDER BY
 	name ASC;
 
+-- Variant 2
+
+SELECT
+	name AS volunteers,
+	phone_number,
+	SUBSTRING(TRIM(REPLACE(address, 'Sofia', '')), 3) AS address
+FROM
+	volunteers
+WHERE
+	department_id = (SELECT id FROM volunteers_departments WHERE department_name = 'Education program 
+
+assistant')
+AND
+	address LIKE '%Sofia%'
+ORDER BY
+	name ASC;
+
 -- 3.10. Animals for Adoption
+
+SELECT
+	a.name AS animal,
+	EXTRACT('year' FROM a.birthdate) AS birth_year,
+	at.animal_type
+FROM
+	animals AS a
+JOIN
+	animal_types AS at
+ON
+	a.animal_type_id = at.id
+WHERE
+	at.animal_type <> 'Birds'
+		AND
+	a.owner_id IS NULL
+		AND
+	AGE('01/01/2022', a.birthdate) < '5 years'
+ORDER BY
+	a.name ASC;
+
+-- 4.11. All Volunteers in a Department
