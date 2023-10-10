@@ -292,3 +292,54 @@ ORDER BY
 	a.name ASC;
 
 -- 4.11. All Volunteers in a Department
+
+CREATE OR REPLACE FUNCTION 
+	fn_get_volunteers_count_from_department(searched_volunteers_department VARCHAR(30))
+RETURNS INT
+AS
+$$
+	BEGIN
+		RETURN
+			COUNT(*)
+		FROM
+			volunteers AS v
+		JOIN
+			volunteers_departments AS vd
+		ON
+			v.department_id = vd.id
+		WHERE
+			department_name = searched_volunteers_department;
+	END;
+$$
+LANGUAGE plpgsql;
+
+-- 4.12. Animals with Owner or Not
+
+CREATE OR REPLACE PROCEDURE 
+	sp_animals_with_owners_or_not(
+		IN animal_name VARCHAR(30),
+		OUT procedure_output VARCHAR(30)
+)
+AS
+$$
+	BEGIN
+		SELECT
+			o.name
+		FROM
+			animals AS a
+		LEFT JOIN
+			owners AS o
+		ON
+			a.owner_id = o.id
+		WHERE
+			a.name = animal_name
+		INTO procedure_output;
+		IF procedure_output IS NULL THEN
+			procedure_output = 'For adoption';
+	END IF;
+	RETURN;
+	END;
+$$
+LANGUAGE plpgsql;
+
+CALL sp_animals_with_owners_or_not('Pumpkinseed Sunfish')
