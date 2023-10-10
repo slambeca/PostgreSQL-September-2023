@@ -1,5 +1,3 @@
--- 1.1. Database Design
-
 DROP TABLE IF EXISTS addresses CASCADE;
 
 CREATE TABLE addresses (
@@ -124,3 +122,71 @@ CREATE TABLE cars_drivers (
 	ON UPDATE CASCADE
 	ON DELETE CASCADE
 );
+
+-- 2.2. Insert
+
+INSERT INTO
+	clients(full_name, phone_number)
+SELECT
+	CONCAT_WS(' ', first_name, last_name),
+	'(088) 9999' || id * 2
+FROM
+	drivers
+WHERE
+	"id" BETWEEN 10 AND 20;
+
+-- 2.3. Update
+
+UPDATE
+	cars
+SET
+	condition = 'C'
+WHERE
+	(mileage > 800000 OR mileage IS NULL)
+		AND
+	year <= 2010
+		AND
+	make <> 'Mercedes-Benz';
+
+-- 2.4. Delete
+
+DELETE FROM
+	clients
+WHERE
+	LENGTH(full_name) > 3
+		AND
+	"id" NOT IN (
+		SELECT client_id FROM courses);
+
+-- 3.5. Cars
+
+SELECT
+	make,
+	model,
+	condition
+FROM
+	cars;
+
+-- 3.6. Drivers and Cars
+
+SELECT
+	d.first_name,
+	d.last_name,
+	c.make,
+	c.model,
+	c.mileage
+FROM
+	drivers AS d
+JOIN
+	cars_drivers AS cd
+ON
+	d.id = cd.driver_id
+JOIN
+	cars AS c
+ON
+	cd.car_id = c.id
+WHERE
+	c.mileage IS NOT NULL
+ORDER BY
+	mileage DESC,
+	first_name ASC;
