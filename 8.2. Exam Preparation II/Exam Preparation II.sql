@@ -214,3 +214,56 @@ ORDER BY
 	c.id ASC;
 
 -- 3.8. Regular Clients
+
+SELECT
+	c.full_name,
+	COUNT(cou.id) AS count_of_cars,
+	SUM(cou.bill) AS total_sum
+FROM
+	clients AS c
+JOIN
+	courses AS cou
+ON
+	c.id = cou.client_id
+WHERE
+	full_name LIKE '_a%'
+GROUP BY
+	c.full_name
+HAVING
+	COUNT(cou.id) > 1
+ORDER BY
+	c.full_name;
+
+-- 3.9. Full Information of Courses
+
+SELECT
+	ad.name AS address,
+	CASE
+		WHEN EXTRACT(HOUR FROM cou.start) BETWEEN 6 AND 20 THEN 'Day'
+		ELSE 'Night'
+	END AS day_time,
+	cou.bill AS bill,
+	cl.full_name,
+	ca.make,
+	ca.model,
+	cat.name AS category_name
+FROM
+	courses AS cou
+JOIN
+	addresses AS ad
+ON
+	cou.from_address_id = ad.id
+JOIN
+	clients AS cl
+ON
+	cou.client_id = cl.id
+JOIN
+	cars AS ca
+ON
+	cou.car_id = ca.id
+JOIN
+	categories AS cat
+ON
+	cat.id = ca.category_id
+ORDER BY
+	cou.id;
