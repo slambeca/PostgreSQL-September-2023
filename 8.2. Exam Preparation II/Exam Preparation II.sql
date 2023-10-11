@@ -190,3 +190,27 @@ WHERE
 ORDER BY
 	mileage DESC,
 	first_name ASC;
+
+-- 3.7. Number of Courses for Each Car
+
+SELECT
+	c.id AS car_id,
+	c.make,
+	c.mileage,
+	count(cou.id) AS count_of_courses,
+	ROUND(AVG(cou.bill), 2) AS average_bill
+FROM
+	cars AS c
+LEFT JOIN
+	courses AS cou
+ON
+	c.id = cou.car_id
+GROUP BY
+	c.id
+HAVING
+	count(cou.id) <> 2
+ORDER BY
+	count_of_courses DESC,
+	c.id ASC;
+
+-- 3.8. Regular Clients
