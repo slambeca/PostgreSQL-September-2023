@@ -267,3 +267,44 @@ ON
 	cat.id = ca.category_id
 ORDER BY
 	cou.id;
+
+-- 4.10. Find all Courses by Client’s Phone Number
+
+CREATE OR REPLACE FUNCTION
+	fn_courses_by_client(phone_num VARCHAR(20))
+RETURNS INT AS
+$$
+BEGIN
+RETURN
+	count(*)
+FROM
+	courses AS co
+JOIN
+	clients AS cl
+ON
+	cl.id = co.client_id
+WHERE
+	cl.phone_number LIKE phone_num;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- Variant 2
+
+CREATE OR REPLACE FUNCTION 
+	fn_courses_by_client(phone_num VARCHAR(20))
+RETURNS INTEGER AS 
+$$
+DECLARE
+    course_count INT;
+BEGIN
+    SELECT COUNT(*) INTO course_count
+    FROM clients AS c
+    JOIN courses AS co ON c.id = co.client_id
+    WHERE c.phone_number = phone_num;
+    RETURN course_count;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- 4.11. Full Info for Address 
