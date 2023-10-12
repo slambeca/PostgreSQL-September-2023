@@ -313,3 +313,26 @@ GROUP BY
 	c.last_name, p.name
 ORDER BY
 	average_rating DESC;
+
+-- 4.11. Creator of Board Games
+
+CREATE OR REPLACE FUNCTION
+	fn_creator_with_board_games(first_name_arg VARCHAR(30))
+RETURNS INT AS
+$$
+	BEGIN
+	RETURN
+	COUNT(cbg.creator_id) 
+FROM
+	creators AS c
+JOIN
+	creators_board_games AS cbg
+ON
+	c.id = cbg.creator_id
+WHERE
+	c.first_name = first_name_arg;
+	END;
+$$
+LANGUAGE plpgsql;
+
+-- 4.12. Search for Board Games
