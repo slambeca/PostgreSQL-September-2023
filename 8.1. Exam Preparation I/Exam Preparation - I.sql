@@ -313,6 +313,24 @@ $$
 $$
 LANGUAGE plpgsql;
 
+-- Variant 2 without JOIN
+
+CREATE OR REPLACE FUNCTION
+ fn_get_volunteers_count_from_department(searched_volunteers_department VARCHAR(30))
+RETURNS INT
+AS
+$$
+ BEGIN
+  RETURN
+ COUNT(*)
+FROM
+ volunteers
+WHERE
+ department_id = (SELECT id FROM volunteers_departments WHERE department_name = searched_volunteers_department);
+ END;
+$$
+LANGUAGE plpgsql;
+
 -- 4.12. Animals with Owner or Not
 
 CREATE OR REPLACE PROCEDURE 
