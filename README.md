@@ -16,3 +16,4 @@ Databases are the standard way of using dynamic information in modern technology
 * Transaction Management
 
 # Certificate and Course Cirriculum
+![PostgreSQL - September 2023 - Certificate](https://github.com/slambeca/SoftUni-PostgreSQL-September-2023/assets/95913250/3bdbeb8b-cd08-476b-9f2f-ac1067edd34c)
